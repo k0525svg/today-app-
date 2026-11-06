@@ -1,1 +1,180 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b1b">
+<title>ASTRA — 오늘의 별자리</title>
+<meta name="description" content="매일 새롭게 펼쳐지는 12개 별자리의 오늘의 운세">
+<style>
+:root{--bg:#f7f6f2;--paper:#fff;--ink:#202b39;--muted:#7c8490;--line:#e9e6df;--gold:#a88952;--navy:#182638;--soft:#f3eee4}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;line-height:1.75}
+.wrap{width:min(100% - 32px,920px);margin:auto}
+header{height:64px;border-bottom:1px solid var(--line);display:flex;align-items:center}
+.head{display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:13px;font-weight:800;letter-spacing:.24em;color:var(--gold)}
+.today{font-size:12px;color:var(--muted)}
+.hero{text-align:center;padding:50px 0 34px}
+.kicker{font-size:10px;letter-spacing:.24em;color:var(--gold);font-weight:800}
+h1{font-family:Georgia,"Noto Serif KR",serif;font-size:clamp(30px,5vw,44px);font-weight:500;letter-spacing:-.045em;margin:8px 0}
+.sub{font-size:13px;color:var(--muted);margin:0}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:12px 0}
+.section-title strong{font-size:14px}.section-title span{font-size:11px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}
+.sign{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:12px 4px 10px;cursor:pointer;color:var(--ink);transition:.16s}
+.sign:hover{border-color:#c8b58f;transform:translateY(-1px)}
+.sign.active{background:var(--navy);border-color:var(--navy);color:white}
+.symbol{display:block;font-family:Georgia,serif;font-size:25px;color:var(--gold);line-height:1.2}
+.sign-name{display:block;font-size:11px;margin-top:5px;white-space:nowrap}
+.result{display:none;margin:28px 0 42px}
+.banner{background:var(--navy);color:white;border-radius:15px;padding:25px 27px}
+.banner-label{font-size:10px;letter-spacing:.18em;color:#d8c39b}
+.banner h2{font-family:Georgia,"Noto Serif KR",serif;font-weight:500;font-size:25px;line-height:1.4;margin:8px 0}
+.banner p{color:#e1e5ea;font-size:13px;line-height:1.9;margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:17px}
+.tag{border:1px solid #ffffff3d;color:#f0e8da;border-radius:30px;padding:4px 9px;font-size:10px}
+.cards{background:white;border:1px solid var(--line);border-radius:15px;margin-top:12px;overflow:hidden}
+.fortune{display:grid;grid-template-columns:105px 1fr;gap:16px;padding:20px 23px;border-bottom:1px solid var(--line)}
+.fortune:last-child{border-bottom:0}
+.label-row{display:flex;flex-direction:column;gap:4px}.label{font-size:13px;font-weight:750;color:var(--gold);padding-top:2px}.mini-score{font-size:11px;letter-spacing:1px;color:var(--gold);white-space:nowrap}.mini-score .num{letter-spacing:0;color:var(--muted);font-size:10px;margin-left:4px}
+.copy{font-size:13px;color:#505b68;line-height:2;margin:0;word-break:keep-all}
+.tip{background:var(--soft);border-radius:12px;margin-top:12px;padding:17px 20px}
+.tip b{font-size:12px;color:#8b7042}.tip p{font-size:13px;color:#505b68;margin:5px 0 0}
+footer{text-align:center;color:#969ba2;font-size:10px;padding:4px 0 34px}
+@media(max-width:600px){.wrap{width:calc(100% - 24px)}.hero{padding:38px 0 26px}.grid{grid-template-columns:repeat(4,1fr);gap:7px}.sign{padding:10px 2px}.symbol{font-size:23px}.banner{padding:21px 18px}.banner h2{font-size:22px}.fortune{grid-template-columns:1fr;gap:3px;padding:16px 17px}.copy{font-size:12px}.label{font-size:12px}}
 
+/* ===== ASTRA: DARK CELESTIAL THEME OVERRIDE ===== */
+:root{--bg:#080b1b;--paper:#11162d;--ink:#f2e9dc;--muted:#aaa5bc;--line:rgba(210,174,117,.25);--gold:#e3bd7b;--navy:#171b3a;--soft:#211d3b}
+html,body{min-height:100%;background-color:#080b1b!important;color:#f2e9dc!important}
+body{background:radial-gradient(ellipse at 50% 0%,rgba(91,62,130,.34),transparent 42%),radial-gradient(ellipse at 5% 45%,rgba(35,61,112,.22),transparent 35%),radial-gradient(ellipse at 95% 80%,rgba(80,48,116,.2),transparent 38%),linear-gradient(180deg,#080b1b 0%,#0d1128 55%,#080b1b 100%)!important;position:relative}
+body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.65;background-image:radial-gradient(1px 1px at 7% 14%,#fff 98%,transparent),radial-gradient(1px 1px at 18% 73%,#d9c9ff 98%,transparent),radial-gradient(1.5px 1.5px at 32% 31%,#fff 98%,transparent),radial-gradient(1px 1px at 44% 86%,#fff 98%,transparent),radial-gradient(1px 1px at 57% 17%,#d9c9ff 98%,transparent),radial-gradient(1.5px 1.5px at 69% 55%,#fff 98%,transparent),radial-gradient(1px 1px at 81% 9%,#fff 98%,transparent),radial-gradient(1px 1px at 93% 72%,#d9c9ff 98%,transparent);background-size:300px 260px}
+body>*{position:relative;z-index:1}
+header{background:rgba(7,10,25,.82)!important;border-bottom:1px solid rgba(227,189,123,.3)!important;backdrop-filter:blur(12px)}
+.brand,.kicker,.label,.mini-score{color:#e3bd7b!important}.today,.sub,.section-title span{color:#b5aec4!important}
+h1{color:#f5e5cb!important;text-shadow:0 0 28px rgba(227,189,123,.18)}
+.section-title strong{color:#f1e5d4!important}
+.sign{background:linear-gradient(145deg,#1b2040,#11162e)!important;border:1px solid rgba(210,174,117,.32)!important;color:#f0e7dc!important;box-shadow:inset 0 1px rgba(255,255,255,.035),0 8px 22px rgba(0,0,0,.2)}
+.sign:hover{border-color:#e3bd7b!important;box-shadow:0 0 20px rgba(227,189,123,.15)!important}
+.sign.active{background:linear-gradient(145deg,#60456f,#252c50)!important;border-color:#e3bd7b!important;color:#fff8ed!important}
+.symbol{color:#e8c384!important;text-shadow:0 0 14px rgba(227,189,123,.28)}
+.banner{background:radial-gradient(ellipse at 85% 5%,rgba(117,76,145,.27),transparent 45%),linear-gradient(135deg,#20264b,#11162f)!important;border:1px solid rgba(227,189,123,.55)!important;color:#fff4e4!important;box-shadow:0 14px 42px rgba(0,0,0,.25)}
+.banner-label{color:#e8c78f!important}.banner h2{color:#f6e3c5!important}.banner p{color:#e1d9e8!important}
+.tag{border-color:rgba(227,189,123,.45)!important;background:rgba(7,10,27,.35)!important;color:#f2dcb7!important}
+.cards{background:#11162d!important;border:1px solid rgba(210,174,117,.3)!important;box-shadow:0 14px 38px rgba(0,0,0,.22)}
+.fortune{border-bottom-color:rgba(210,174,117,.2)!important}.copy{color:#e0d9e7!important}.mini-score .num{color:#bdb4ca!important}
+.tip{background:linear-gradient(135deg,#302749,#1b2342)!important;border:1px solid rgba(210,174,117,.32)!important}.tip b{color:#edc681!important}.tip p{color:#e1d9e7!important}
+footer{color:#928da5!important}
+@media(max-width:600px){.sign{background:linear-gradient(145deg,#1b2040,#11162e)!important}}
+
+</style>
+</head>
+<body>
+<header><div class="wrap head"><div class="brand">ASTRA</div><div class="today" id="date"></div></div></header>
+<main class="wrap">
+<section class="hero"><div class="kicker">DAILY ASTROLOGY</div><h1>오늘의 별자리 운세</h1><p class="sub">하루의 흐름을 읽고, 나만의 방향을 발견하는 시간</p></section>
+<section><div class="section-title"><strong>별자리 선택</strong><span>별자리를 누르면 오늘의 해석이 펼쳐집니다</span></div><div class="grid" id="grid"></div></section>
+<section class="result" id="result">
+<div class="banner"><div class="banner-label" id="bannerDate"></div><h2 id="headline"></h2><p id="summary"></p><div class="tags"><span class="tag" id="score"></span><span class="tag" id="color"></span><span class="tag" id="number"></span><span class="tag" id="time"></span></div></div>
+<div class="cards">
+<div class="fortune"><div class="label-row"><div class="label">종합운</div><div class="mini-score" id="overallScore"></div></div><p class="copy" id="overall"></p></div>
+<div class="fortune"><div class="label-row"><div class="label">애정운</div><div class="mini-score" id="loveScore"></div></div><p class="copy" id="love"></p></div>
+<div class="fortune"><div class="label-row"><div class="label">금전운</div><div class="mini-score" id="moneyScore"></div></div><p class="copy" id="money"></p></div>
+<div class="fortune"><div class="label-row"><div class="label">직장운</div><div class="mini-score" id="workScore"></div></div><p class="copy" id="work"></p></div>
+<div class="fortune"><div class="label-row"><div class="label">건강운</div><div class="mini-score" id="healthScore"></div></div><p class="copy" id="health"></p></div>
+</div><div class="tip"><b>오늘의 별자리 조언</b><p id="advice"></p></div>
+</section>
+</main>
+<footer class="wrap">ASTRA DAILY HOROSCOPE · 운세는 재미와 자기 성찰을 위한 콘텐츠이며 중요한 결정의 유일한 근거로 삼지 마세요.</footer>
+<script>
+const signs=[
+{id:"aries",name:"양자리",sym:"♈",element:"불",traits:"빠른 결단력과 솔직한 추진력",focus:"속도보다 방향을 살피는 태도"},
+{id:"taurus",name:"황소자리",sym:"♉",element:"흙",traits:"꾸준함과 안정적인 감각",focus:"익숙한 방식을 지키되 작은 변화를 받아들이는 일"},
+{id:"gemini",name:"쌍둥이자리",sym:"♊",element:"바람",traits:"호기심과 유연한 소통 능력",focus:"많은 선택지 중 중요한 한 가지를 고르는 일"},
+{id:"cancer",name:"게자리",sym:"♋",element:"물",traits:"섬세한 관찰력과 깊은 공감",focus:"타인의 마음만큼 자신의 감정도 돌보는 일"},
+{id:"leo",name:"사자자리",sym:"♌",element:"불",traits:"따뜻한 존재감과 표현력",focus:"주목받는 것보다 진심을 나누는 일"},
+{id:"virgo",name:"처녀자리",sym:"♍",element:"흙",traits:"세밀한 판단력과 책임감",focus:"완벽함보다 지속 가능한 균형을 찾는 일"},
+{id:"libra",name:"천칭자리",sym:"♎",element:"바람",traits:"조화로운 감각과 균형 잡힌 시선",focus:"모두를 만족시키려 하기보다 자신의 기준을 세우는 일"},
+{id:"scorpio",name:"전갈자리",sym:"♏",element:"물",traits:"집중력과 본질을 꿰뚫는 통찰",focus:"의심을 키우기보다 확인하고 대화하는 일"},
+{id:"sagittarius",name:"사수자리",sym:"♐",element:"불",traits:"개방적인 태도와 도전 정신",focus:"가능성을 넓히면서 현실적인 계획도 세우는 일"},
+{id:"capricorn",name:"염소자리",sym:"♑",element:"흙",traits:"인내심과 목표를 향한 성실함",focus:"성과만큼 과정에서 쌓인 회복력도 인정하는 일"},
+{id:"aquarius",name:"물병자리",sym:"♒",element:"바람",traits:"독창적인 관점과 독립적인 사고",focus:"새로운 생각을 주변과 연결해 실현하는 일"},
+{id:"pisces",name:"물고기자리",sym:"♓",element:"물",traits:"풍부한 상상력과 직관적인 감수성",focus:"느낌을 존중하되 사실과 기대를 구분하는 일"}
+];
+const banks={
+overall:[
+"오늘은 주변의 흐름을 세심하게 살필수록 놓치고 있던 기회를 발견하기 쉬운 날입니다. 처음부터 큰 변화를 만들기보다 지금 할 수 있는 일을 차분히 정리해 보세요. 작은 선택 하나가 하루의 리듬을 안정시키는 기준이 될 수 있습니다.",
+"여러 일이 동시에 눈에 들어오더라도 모든 것을 한 번에 해결하려 하지 않는 편이 좋겠습니다. 우선순위를 정하고 중요한 일부터 마무리하면 생각보다 여유가 생깁니다. 오늘의 성과는 속도보다 집중력에서 비롯될 가능성이 큽니다.",
+"평소와 다른 제안이나 대화가 새로운 관점을 열어줄 수 있습니다. 다만 분위기에 휩쓸려 결정을 서두르기보다는 조건과 자신의 마음을 함께 확인하세요. 신중함을 유지한다면 긍정적인 흐름을 오래 이어갈 수 있습니다.",
+"기대했던 반응이 바로 돌아오지 않아도 조급해하지 마세요. 오늘은 결과를 재촉하기보다 과정에서 부족한 부분을 보완하기에 알맞습니다. 한 걸음씩 정리한 노력이 이후의 자신감을 만들어 줄 것입니다."
+],
+love:[
+"솔로라면 평소 자주 마주치는 사람이나 가벼운 대화 속에서 호감을 발견할 수 있습니다. 첫인상만으로 관계를 단정하지 말고 상대의 말과 행동을 천천히 살펴보세요. 연애 중이라면 사소한 관심 표현이 관계에 온기를 더합니다. 서운한 점이 있다면 추측보다 부드러운 대화로 확인하는 것이 좋겠습니다.",
+"오늘의 애정운은 마음을 표현하는 방식에 따라 분위기가 달라질 수 있음을 보여줍니다. 솔로라면 먼저 다가오는 인연을 부담스럽게 여기기보다 편안한 대화부터 시작해 보세요. 연애 중인 사람은 상대가 알아서 이해해 주기를 기다리기보다 원하는 것을 구체적으로 전하는 편이 좋습니다. 서로의 속도를 존중하면 관계가 한층 안정됩니다.",
+"감정이 예민해질 수 있는 날이므로 작은 말 한마디를 지나치게 해석하지 않는 것이 중요합니다. 솔로라면 과거의 인연과 새로운 가능성을 비교하기보다 지금 자신이 원하는 관계가 무엇인지 생각해 보세요. 연애 중이라면 함께 보내는 시간의 양보다 대화의 질에 집중하세요. 진심을 담은 짧은 표현이 오해를 줄여줄 수 있습니다.",
+"새로운 만남을 원한다면 익숙한 일상에서 한 걸음 벗어나 보세요. 솔로에게는 취미나 관심사가 비슷한 사람과 자연스럽게 가까워질 가능성이 있습니다. 연애 중이라면 반복되는 일상에 작은 변화를 더하는 것이 좋겠습니다. 특별한 이벤트보다 서로의 이야기를 충분히 들어주는 시간이 관계를 깊게 합니다."
+],
+money:[
+"금전운은 안정적인 관리에 무게가 실립니다. 계획에 없던 구매는 결제 전에 필요성과 사용 빈도를 한 번 더 따져보세요. 작은 지출을 기록하면 생각보다 쉽게 줄일 수 있는 항목이 보일 수 있습니다. 오늘은 큰 수익을 기대하기보다 지출의 흐름을 파악하는 것이 유리합니다.",
+"생활비와 고정비를 점검하기 좋은 날입니다. 자동 결제나 사용하지 않는 서비스가 있는지 확인하면 불필요한 지출을 줄이는 데 도움이 됩니다. 할인이나 한정 혜택이라는 말에 서두르지 말고 실제로 필요한 물건인지 판단하세요. 여유 자금은 목적을 나누어 관리하는 편이 안정적입니다.",
+"주변의 소비 분위기에 영향을 받기 쉬우니 자신만의 예산 기준을 지키는 것이 중요합니다. 특히 피곤하거나 기분 전환이 필요할 때의 충동구매를 주의하세요. 큰 금액을 움직이는 결정은 정보를 충분히 확인한 뒤 판단하는 편이 좋습니다. 오늘의 절제는 이후 선택의 폭을 넓혀줄 수 있습니다.",
+"작은 금액이라도 꾸준히 관리하는 습관이 금전 흐름을 단단하게 만듭니다. 지출 내역을 돌아보고 다음 주에 필요한 금액을 미리 나누어 두세요. 누군가의 권유만으로 구매나 투자를 결정하지 말고 조건과 위험을 직접 확인해야 합니다. 안정적인 계획이 마음의 여유로 이어집니다."
+],
+work:[
+"업무에서는 기본을 꼼꼼히 확인하는 태도가 좋은 평가로 이어질 수 있습니다. 여러 요청이 겹친다면 마감 시간과 중요도를 기준으로 순서를 정하세요. 진행 상황을 주변과 공유하면 불필요한 오해를 줄일 수 있습니다. 혼자 해결하려 하기보다 필요한 순간 도움을 요청하는 것도 능력입니다.",
+"새로운 역할이나 제안을 접한다면 부담부터 느끼기보다 자신이 배울 수 있는 부분을 살펴보세요. 다만 맡을 범위와 일정은 시작 전에 명확히 확인하는 것이 좋습니다. 동료와 의견이 다를 때는 결론을 서두르기보다 서로의 근거를 듣는 편이 유리합니다. 차분한 소통이 협업의 흐름을 부드럽게 만듭니다.",
+"집중력이 필요한 업무를 먼저 처리하면 하루의 효율이 높아질 수 있습니다. 사소한 확인 절차를 생략하지 말고 기록을 남겨두면 실수를 예방하는 데 도움이 됩니다. 주변의 평가에 지나치게 흔들리기보다 자신이 맡은 역할을 꾸준히 수행하세요. 성실하게 쌓은 결과가 신뢰로 연결됩니다.",
+"오늘은 새로운 아이디어를 현실적인 계획으로 바꾸기에 알맞습니다. 생각을 제안할 때는 기대 효과와 실행 순서를 함께 설명하면 설득력이 높아집니다. 예상보다 진행이 늦어져도 조급하게 방향을 바꾸지 말고 원인을 먼저 확인하세요. 유연함과 책임감을 함께 보여주는 것이 핵심입니다."
+],
+health:[
+"몸의 리듬을 일정하게 유지하는 것이 중요합니다. 식사를 거르거나 휴식 시간을 뒤로 미루지 말고 기본적인 생활 패턴을 챙겨보세요. 오래 앉아 있었다면 잠시 일어나 가볍게 움직이는 것만으로도 기분 전환에 도움이 됩니다. 피로가 쌓였다면 무리한 일정보다 충분한 휴식을 우선하세요.",
+"생각이 많아지면 몸의 긴장도 함께 높아질 수 있습니다. 짧게라도 화면에서 눈을 떼고 호흡을 고르며 어깨와 목을 풀어주세요. 카페인이나 늦은 시간의 과식은 수면 리듬에 영향을 줄 수 있으니 섭취 시간을 살펴보는 편이 좋습니다. 오늘은 회복을 위한 작은 습관을 만드는 데 집중하세요.",
+"활동량과 휴식의 균형을 맞추면 컨디션을 안정적으로 유지할 수 있습니다. 바쁜 일정 중에도 물을 마시고 가벼운 식사를 챙기는 일을 잊지 마세요. 운동을 한다면 무리하게 강도를 높이기보다 몸 상태에 맞춰 조절하는 것이 좋습니다. 몸이 보내는 불편한 신호가 지속되면 전문가의 도움을 받으세요.",
+"하루의 끝을 차분하게 정리하면 다음 날의 컨디션에도 도움이 됩니다. 잠들기 전 자극적인 콘텐츠를 줄이고 일정한 시간에 쉬는 습관을 만들어 보세요. 긴장을 풀 수 있는 산책이나 스트레칭도 좋은 선택입니다. 오늘은 더 많이 해내는 것보다 잘 회복하는 것을 목표로 삼아도 좋겠습니다."
+]
+};
+const advice=[
+"오늘의 핵심은 서두르지 않고 자신의 속도를 지키는 것입니다.",
+"작은 약속을 지키는 일이 생각보다 큰 신뢰를 만듭니다.",
+"타인의 기준보다 지금 자신에게 필요한 선택을 먼저 살펴보세요.",
+"결정을 내리기 전 한 번 더 확인하는 여유가 좋은 흐름을 만듭니다.",
+"완벽한 시작보다 꾸준히 이어갈 수 있는 작은 행동을 선택하세요.",
+"마음에 걸리는 일이 있다면 혼자 추측하지 말고 차분히 확인해 보세요."
+];
+const colors=["샴페인 골드","세이지 그린","미드나잇 블루","라벤더 그레이","웜 아이보리","로즈 브라운","실버","딥 버건디"];
+const times=["오전 8시~10시","오전 10시~정오","정오~오후 2시","오후 2시~4시","오후 4시~6시","오후 6시~8시"];
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function pick(arr,key){return arr[hash(key)%arr.length]}
+function today(){const p=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());const o=Object.fromEntries(p.map(x=>[x.type,x.value]));return `${o.year}-${o.month}-${o.day}`}
+function dateLabel(d){const [y,m,day]=d.split("-");return `${y}년 ${Number(m)}월 ${Number(day)}일`}
+function show(id){
+ const s=signs.find(x=>x.id===id),d=today(),key=d+"-"+id;
+ document.querySelectorAll(".sign").forEach(b=>{const active=b.dataset.id===id;b.classList.toggle("active",active);b.setAttribute("aria-pressed",active)});
+ const score=3+(hash(key+"score")%3),num=1+(hash(key+"number")%99);
+ document.getElementById("bannerDate").textContent=dateLabel(d)+" · DAILY READING";
+ document.getElementById("headline").textContent=`${s.sym} ${s.name} — 오늘, ${pick(["새로운 균형을 찾는 날","가능성을 넓히는 날","마음을 정돈하는 날","차분히 결실을 준비하는 날"],key+"head")}`;
+ document.getElementById("summary").textContent=`${s.traits}이 돋보이는 하루입니다. ${s.focus}에 주의를 기울이면 일상의 흐름을 더 안정적으로 이끌 수 있습니다.`;
+ for(const c of ["overall","love","money","work","health"]){
+   document.getElementById(c).textContent=pick(banks[c],key+"-"+c);
+   // 날짜와 별자리를 기준으로 점수가 고정되며, 날짜가 바뀌면 새 점수로 변경됩니다.
+   const rating = 2.5 + ((hash(key+"-"+c+"-rating") % 6) * 0.5);
+   const full = Math.floor(rating), half = rating % 1 >= 0.5;
+   const stars = "★".repeat(full) + (half ? "½" : "") + "☆".repeat(5-full-(half?1:0));
+   document.getElementById(c+"Score").innerHTML = `${stars}<span class="num">${rating.toFixed(1)}</span>`;
+ }
+ document.getElementById("score").textContent=`오늘의 흐름 ${"★".repeat(score)}${"☆".repeat(5-score)}`;
+ document.getElementById("color").textContent="행운의 색 "+pick(colors,key+"color");
+ document.getElementById("number").textContent="행운의 숫자 "+num;
+ document.getElementById("time").textContent="행운의 시간 "+pick(times,key+"time");
+ document.getElementById("advice").textContent=pick(advice,key+"advice");
+ document.getElementById("result").style.display="block";
+}
+function init(){
+ const d=today();document.getElementById("date").textContent=dateLabel(d);
+ document.getElementById("grid").innerHTML=signs.map(s=>`<button type="button" class="sign" data-id="${s.id}" aria-pressed="false"><span class="symbol">${s.sym}</span><span class="sign-name">${s.name}</span></button>`).join("");
+ document.querySelectorAll(".sign").forEach(b=>b.addEventListener("click",()=>show(b.dataset.id)));
+ show("aries");
+}
+init();
+</script>
+</body>
+</html>
